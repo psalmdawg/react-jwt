@@ -30,6 +30,16 @@ userSchema.pre('save', function(next){
   })
 })
 
+
+//bcrypt comparing passwords with salt and hashing to see if they match
+userSchema.methods.comparePassword = function(candidatePassword, callback){
+  bcrypt.compare(candidatePassword, this.password, function(err, isMatch){
+    if(err){ return callback(err) }
+
+    callback(null, isMatch)
+  })
+}
+
 //create model class
 const ModelClass = mongoose.model('user', userSchema);
 
